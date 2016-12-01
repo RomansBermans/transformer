@@ -24,7 +24,11 @@ const $ = {
     return r;
   },
 
-  unflatten: true, // TODO:
+  unflatten: (o, d = '.') => {
+    const r = {};
+    Object.keys(o).forEach(k => k.split(d).reduce((p, c, i, a) => (i === a.length - 1 ? (p[c] = o[k]) : (p[c] = p[c] ? p[c] : {})), r));
+    return r;
+  },
 
   template: (s, c) => {
     let r = s;

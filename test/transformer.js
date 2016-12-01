@@ -10,11 +10,19 @@ const transformer = require('../transformer');
 
 describe('transformer', () => {
   it('c2a', () => {
-    let $in = [
+    let $in = [];
+    let $out = [];
+    expect(transformer.c2a($in, null)).to.deep.equal($out);
+
+    $in = {};
+    $out = [];
+    expect(transformer.c2a($in, null)).to.deep.equal($out);
+
+    $in = [
       { x: 1, y: 1 },
       { x: 2, y: 2 },
     ];
-    let $out = [
+    $out = [
       { null: '0', x: 1, y: 1 },
       { null: '1', x: 2, y: 2 },
     ];
@@ -53,11 +61,15 @@ describe('transformer', () => {
 
 
   it('a2a', () => {
-    let $in = [
+    let $in = [];
+    let $out = [];
+    expect(transformer.a2a($in, null)).to.deep.equal($out);
+
+    $in = [
       { id: '1', x: 1, y: 1 },
       { id: '2', x: 2, y: 2 },
     ];
-    let $out = [
+    $out = [
       { undefined: { id: '1', x: 1, y: 1 } },
       { undefined: { id: '2', x: 2, y: 2 } },
     ];
@@ -76,11 +88,15 @@ describe('transformer', () => {
 
 
   it('a2o', () => {
-    let $in = [
+    let $in = [];
+    let $out = {};
+    expect(transformer.a2o($in, null)).to.deep.equal($out);
+
+    $in = [
       { id: '1', x: 1, y: 1 },
       { id: '2', x: 2, y: 2 },
     ];
-    let $out = {
+    $out = {
       undefined: { id: '2', x: 2, y: 2 },
     };
     expect(transformer.a2o($in, null)).to.deep.equal($out);
@@ -137,21 +153,64 @@ describe('transformer', () => {
 
 
   it('flatten', () => {
-    let $in = { a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3, h: 3, j: { k: { l: true } } } } };
-    let $out = { a: 1, 'b.c': 2, 'b.d': 2, 'b.e.f': 3, 'b.e.g': 3, 'b.e.h': 3, 'b.e.j.k.l': true };
+    let $in = { x: 1, y: null, z: undefined };
+    let $out = { x: 1, y: null, z: undefined };
+    expect(transformer.flatten($in)).to.deep.equal($out);
+
+    $in = { a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3, h: 3, j: { k: { l: true } } } } };
+    $out = { a: 1, 'b.c': 2, 'b.d': 2, 'b.e.f': 3, 'b.e.g': 3, 'b.e.h': 3, 'b.e.j.k.l': true };
     expect(transformer.flatten($in)).to.deep.equal($out);
 
     $in = ['a', { b: 1 }, { c: 2, d: 2 }];
     $out = { 0: 'a', '1.b': 1, '2.c': 2, '2.d': 2 };
     expect(transformer.flatten($in)).to.deep.equal($out);
 
+    $in = { a: [1, { b: 1 }, { c: 2, d: [2, 2] }] };
+    $out = { 'a.0': 1, 'a.1.b': 1, 'a.2.c': 2, 'a.2.d.0': 2, 'a.2.d.1': 2 };
+    expect(transformer.flatten($in)).to.deep.equal($out);
+
     $in = { a: { b: 1, c: 1 } };
     $out = { 'a/b': 1, 'a/c': 1 };
     expect(transformer.flatten($in, '/')).to.deep.equal($out);
 
-    $in = { x: 1, y: null, z: undefined };
-    $out = { x: 1, y: null, z: undefined };
-    expect(transformer.flatten($in)).to.deep.equal($out);
+    $in = { a: { b: 1, c: 1 } };
+    $out = { ab: 1, ac: 1 };
+    expect(transformer.flatten($in, '')).to.deep.equal($out);
+
+    $in = { a: { b: 1, c: 1, dd: 1 } };
+    $out = { ab: 1, ac: 1, add: 1 };
+    expect(transformer.flatten($in, '')).to.deep.equal($out);
+  });
+
+
+  it('unflatten', () => {
+    let $in = { x: 1, y: null, z: undefined };
+    let $out = { x: 1, y: null, z: undefined };
+    expect(transformer.unflatten($in)).to.deep.equal($out);
+
+    $in = { a: 1, 'b.c': 2, 'b.d': 2, 'b.e.f': 3, 'b.e.g': 3, 'b.e.h': 3, 'b.e.j.k.l': true };
+    $out = { a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3, h: 3, j: { k: { l: true } } } } };
+    expect(transformer.unflatten($in)).to.deep.equal($out);
+
+    $in = { 0: 'a', '1.b': 1, '2.c': 2, '2.d': 2 };
+    $out = { 0: 'a', 1: { b: 1 }, 2: { c: 2, d: 2 } };
+    expect(transformer.unflatten($in)).to.deep.equal($out);
+
+    $in = { 'a.0': 1, 'a.1.b': 1, 'a.2.c': 2, 'a.2.d.0': 2, 'a.2.d.1': 2 };
+    $out = { a: { 0: 1, 1: { b: 1 }, 2: { c: 2, d: { 0: 2, 1: 2 } } } };
+    expect(transformer.unflatten($in)).to.deep.equal($out);
+
+    $in = { 'a/b': 1, 'a/c': 1 };
+    $out = { a: { b: 1, c: 1 } };
+    expect(transformer.unflatten($in, '/')).to.deep.equal($out);
+
+    $in = { ab: 1, ac: 1 };
+    $out = { a: { b: 1, c: 1 } };
+    expect(transformer.unflatten($in, '')).to.deep.equal($out);
+
+    $in = { ab: 1, ac: 1, add: 1 };
+    $out = { a: { b: 1, c: 1, d: { d: 1 } } };
+    expect(transformer.unflatten($in, '')).to.deep.equal($out);
   });
 
 
