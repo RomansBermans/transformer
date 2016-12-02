@@ -9,14 +9,14 @@ const transformer = require('../transformer');
 
 
 describe('transformer', () => {
-  it('c2a', () => {
+  it('co2ar', () => {
     let $in = [];
     let $out = [];
-    expect(transformer.c2a($in, null)).to.deep.equal($out);
+    expect(transformer.co2ar($in, null)).to.deep.equal($out);
 
     $in = {};
     $out = [];
-    expect(transformer.c2a($in, null)).to.deep.equal($out);
+    expect(transformer.co2ar($in, null)).to.deep.equal($out);
 
     $in = [
       { x: 1, y: 1 },
@@ -26,7 +26,7 @@ describe('transformer', () => {
       { null: '0', x: 1, y: 1 },
       { null: '1', x: 2, y: 2 },
     ];
-    expect(transformer.c2a($in, null)).to.deep.equal($out);
+    expect(transformer.co2ar($in, null)).to.deep.equal($out);
 
     $in = [
       { x: 1, y: 1 },
@@ -36,7 +36,7 @@ describe('transformer', () => {
       { id: '0', x: 1, y: 1 },
       { id: '1', x: 2, y: 2 },
     ];
-    expect(transformer.c2a($in, 'id')).to.deep.equal($out);
+    expect(transformer.co2ar($in, 'id')).to.deep.equal($out);
 
     $in = [,
       { x: 1, y: 1 },
@@ -46,7 +46,7 @@ describe('transformer', () => {
       { id: '1', x: 1, y: 1 },
       { id: '2', x: 2, y: 2 },
     ];
-    expect(transformer.c2a($in, 'id')).to.deep.equal($out);
+    expect(transformer.co2ar($in, 'id')).to.deep.equal($out);
 
     $in = {
       1: { x: 1, y: 1 },
@@ -56,14 +56,14 @@ describe('transformer', () => {
       { id: '1', x: 1, y: 1 },
       { id: '2', x: 2, y: 2 },
     ];
-    expect(transformer.c2a($in, 'id')).to.deep.equal($out);
+    expect(transformer.co2ar($in, 'id')).to.deep.equal($out);
   });
 
 
-  it('a2a', () => {
+  it('ar2ar', () => {
     let $in = [];
     let $out = [];
-    expect(transformer.a2a($in, null)).to.deep.equal($out);
+    expect(transformer.ar2ar($in, null)).to.deep.equal($out);
 
     $in = [
       { id: '1', x: 1, y: 1 },
@@ -73,7 +73,7 @@ describe('transformer', () => {
       { undefined: { id: '1', x: 1, y: 1 } },
       { undefined: { id: '2', x: 2, y: 2 } },
     ];
-    expect(transformer.a2a($in, null)).to.deep.equal($out);
+    expect(transformer.ar2ar($in, null)).to.deep.equal($out);
 
     $in = [
       { id: '1', x: 1, y: 1 },
@@ -83,14 +83,14 @@ describe('transformer', () => {
       { 1: { x: 1, y: 1 } },
       { 2: { x: 2, y: 2 } },
     ];
-    expect(transformer.a2a($in, 'id')).to.deep.equal($out);
+    expect(transformer.ar2ar($in, 'id')).to.deep.equal($out);
   });
 
 
-  it('a2o', () => {
+  it('ar2ob', () => {
     let $in = [];
     let $out = {};
-    expect(transformer.a2o($in, null)).to.deep.equal($out);
+    expect(transformer.ar2ob($in, null)).to.deep.equal($out);
 
     $in = [
       { id: '1', x: 1, y: 1 },
@@ -99,7 +99,7 @@ describe('transformer', () => {
     $out = {
       undefined: { id: '2', x: 2, y: 2 },
     };
-    expect(transformer.a2o($in, null)).to.deep.equal($out);
+    expect(transformer.ar2ob($in, null)).to.deep.equal($out);
 
     $in = [
       { id: '1', x: 1, y: 1 },
@@ -109,7 +109,7 @@ describe('transformer', () => {
       1: { x: 1, y: 1 },
       2: { x: 2, y: 2 },
     };
-    expect(transformer.a2o($in, 'id')).to.deep.equal($out);
+    expect(transformer.ar2ob($in, 'id')).to.deep.equal($out);
   });
 
 

@@ -1,11 +1,11 @@
 /* */
 
 const $ = {
-  c2a: (c, id) => Object.keys(c).map(k => Object.assign(c[k], { [id]: k })),
+  co2ar: (c, id) => Object.keys(c).map(k => Object.assign(c[k], { [id]: k })),
 
-  a2a: (a, id) => a.map(e => ({ [e[id]]: (() => { delete e[id]; return e; })() })),
+  ar2ar: (a, id) => a.map(e => ({ [e[id]]: (() => { delete e[id]; return e; })() })),
 
-  a2o: (a, id) => a.map(e => ({ [e[id]]: (() => { delete e[id]; return e; })() }))
+  ar2ob: (a, id) => a.map(e => ({ [e[id]]: (() => { delete e[id]; return e; })() }))
                    .reduce((p, c) => {
                      const k = Object.keys(c)[0];
                      p[k] = c[k];
