@@ -39,21 +39,21 @@ const $ = {
   },
 
   assign: (c, ...cs) => {
-    cs.forEach(cc =>
-      (function a(o, oo) {
+    let r = c;
+    cs.forEach(cc => {
+      (function a(o, oo, op, opk) {
         Object.keys(o).forEach(k => {
           if (o[k] && typeof o[k] === 'object') {
-            return a(o[k], oo[k]);
+            return a(o[k], oo[k], o, k);
           }
 
-          // TODO: This part needs more love
-          if (k in oo) {
+          if (typeof oo === 'object' && k in oo) {
             o[k] = oo[k];
+          } else if (typeof oo !== 'object') {
+            op[opk] = oo;
           } else {
             Object.keys(oo).forEach(kk => {
-              if (kk in o) {
-                // oo[kk]
-              } else {
+              if (!(kk in o)) {
                 o[kk] = oo[kk];
               }
             });
@@ -61,9 +61,13 @@ const $ = {
 
           return o[k];
         });
-      }(c, cc))
-    );
-    return c;
+      }(r, cc));
+
+      if (Array.isArray(c) && Array.isArray(cc) && c.length < cc.length) {
+        r = r.concat(cc.slice(c.length));
+      }
+    });
+    return r;
   },
 };
 

@@ -231,6 +231,11 @@ describe('transformer', () => {
     expect($in[0]).to.not.deep.equal($out);
     expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
 
+    $in = [{ a: 1 }, { b: 1 }, { c: 1 }];
+    $out = { a: 1, b: 1, c: 1 };
+    expect($in[0]).to.not.deep.equal($out);
+    expect(transformer.assign($in[0], $in[1], $in[2])).to.deep.equal($out);
+
     $in = [{ a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3 } } }, { b: { d: -2, e: { f: -3 } } }];
     $out = { a: 1, b: { c: 2, d: -2, e: { f: -3, g: 3 } } };
     expect($in[0]).to.not.deep.equal($out);
@@ -243,8 +248,8 @@ describe('transformer', () => {
 
     $in = [[1, 2, 3], [3, 2, 1, 0]];
     $out = [3, 2, 1, 0];
-    // expect($in[0]).to.not.deep.equal($out);
-    // expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
+    expect($in[0]).to.not.deep.equal($out);
+    expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
 
     $in = [[1, 2, 3], [undefined, null, false]];
     $out = [undefined, null, false];
@@ -253,7 +258,7 @@ describe('transformer', () => {
 
     $in = [[1, { a: 1 }, 3], [1, 2]];
     $out = [1, 2, 3];
-    // expect($in[0]).to.not.deep.equal($out);
-    // expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
+    expect($in[0]).to.not.deep.equal($out);
+    expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
   });
 });
