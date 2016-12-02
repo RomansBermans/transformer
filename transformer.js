@@ -44,14 +44,14 @@ const $ = {
       (function a(o, oo, op, opk) {
         Object.keys(o).forEach(k => {
           if (o[k] && typeof o[k] === 'object') {
-            return a(o[k], oo[k], o, k);
+            return a(o[k], oo ? oo[k] : oo, o, k);
           }
 
           if (typeof oo === 'object' && k in oo) {
             o[k] = oo[k];
-          } else if (typeof oo !== 'object') {
+          } else if (oo !== undefined && typeof oo !== 'object') {
             op[opk] = oo;
-          } else {
+          } else if (oo !== undefined) {
             Object.keys(oo).forEach(kk => {
               if (!(kk in o)) {
                 o[kk] = oo[kk];
