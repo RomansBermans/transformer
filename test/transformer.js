@@ -118,37 +118,37 @@ describe('transformer', () => {
     expect(transformer.intersect(undefined)).to.deep.equal(undefined);
     expect(transformer.intersect(null)).to.deep.equal(null);
 
-    let $in = { x: [] };
+    let $in = [[]];
     let $out = [];
-    expect(transformer.intersect($in.x)).to.deep.equal($out);
+    expect(transformer.intersect($in[0])).to.deep.equal($out);
 
-    $in = { x: [], y: [] };
+    $in = [[], []];
     $out = [];
-    expect(transformer.intersect($in.x, $in.y)).to.deep.equal($out);
+    expect(transformer.intersect($in[0], $in[1])).to.deep.equal($out);
 
-    $in = { x: [1], y: [2] };
+    $in = [[1], [2]];
     $out = [];
-    expect(transformer.intersect($in.x, $in.y)).to.deep.equal($out);
+    expect(transformer.intersect($in[0], $in[1])).to.deep.equal($out);
 
-    $in = { x: [1], y: [1] };
+    $in = [[1], [1]];
     $out = [1];
-    expect(transformer.intersect($in.x, $in.y)).to.deep.equal($out);
+    expect(transformer.intersect($in[0], $in[1])).to.deep.equal($out);
 
-    $in = { x: [1, 2, 3], y: [2, 4] };
+    $in = [[1, 2, 3], [2, 4]];
     $out = [2];
-    expect(transformer.intersect($in.x, $in.y)).to.deep.equal($out);
+    expect(transformer.intersect($in[0], $in[1])).to.deep.equal($out);
 
-    $in = { x: [2, 4, 6, 8, 10], y: [1, 2, 3, 4, 5, 6], z: [2, 4, 8, 16, 32] };
+    $in = [[2, 4, 6, 8, 10], [1, 2, 3, 4, 5, 6], [2, 4, 8, 16, 32]];
     $out = [2, 4];
-    expect(transformer.intersect($in.x, $in.y, $in.z)).to.deep.equal($out);
+    expect(transformer.intersect($in[0], $in[1], $in[2])).to.deep.equal($out);
 
-    $in = { x: [true, '1', '2'], y: [false, true, '2'], z: ['2', true] };
+    $in = [[true, '1', '2'], [false, true, '2'], ['2', true]];
     $out = [true, '2'];
-    expect(transformer.intersect($in.x, $in.y, $in.z)).to.deep.equal($out);
+    expect(transformer.intersect($in[0], $in[1], $in[2])).to.deep.equal($out);
 
-    $in = { x: [true, '1', '2'], y: [false, true, '2'], z: ['2', true] };
+    $in = [[true, '1', '2'], [false, true, '2'], ['2', true]];
     $out = ['2', true];
-    expect(transformer.intersect($in.x, $in.y, $in.z).sort()).to.deep.equal($out);
+    expect(transformer.intersect($in[0], $in[1], $in[2]).sort()).to.deep.equal($out);
   });
 
 
@@ -157,8 +157,8 @@ describe('transformer', () => {
     let $out = { x: 1, y: null, z: undefined };
     expect(transformer.flatten($in)).to.deep.equal($out);
 
-    $in = { a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3, h: 3, j: { k: { l: true } } } } };
-    $out = { a: 1, 'b.c': 2, 'b.d': 2, 'b.e.f': 3, 'b.e.g': 3, 'b.e.h': 3, 'b.e.j.k.l': true };
+    $in = { a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3, h: 3, j: { k: { l: false } } } } };
+    $out = { a: 1, 'b.c': 2, 'b.d': 2, 'b.e.f': 3, 'b.e.g': 3, 'b.e.h': 3, 'b.e.j.k.l': false };
     expect(transformer.flatten($in)).to.deep.equal($out);
 
     $in = ['a', { b: 1 }, { c: 2, d: 2 }];
@@ -184,12 +184,12 @@ describe('transformer', () => {
 
 
   it('unflatten', () => {
-    let $in = { x: 1, y: null, z: undefined };
-    let $out = { x: 1, y: null, z: undefined };
+    let $in = { x: undefined, y: null, z: false };
+    let $out = { x: undefined, y: null, z: false };
     expect(transformer.unflatten($in)).to.deep.equal($out);
 
-    $in = { a: 1, 'b.c': 2, 'b.d': 2, 'b.e.f': 3, 'b.e.g': 3, 'b.e.h': 3, 'b.e.j.k.l': true };
-    $out = { a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3, h: 3, j: { k: { l: true } } } } };
+    $in = { a: 1, 'b.c': 2, 'b.d': 2, 'b.e.f': 3, 'b.e.g': 3, 'b.e.h': 3, 'b.e.j.k.l': false };
+    $out = { a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3, h: 3, j: { k: { l: false } } } } };
     expect(transformer.unflatten($in)).to.deep.equal($out);
 
     $in = { 0: 'a', '1.b': 1, '2.c': 2, '2.d': 2 };
@@ -215,12 +215,45 @@ describe('transformer', () => {
 
 
   it('template', () => {
-    let $in = { s: '${point.x} < ${point.y}', o: { point: { x: 1, y: 2 } } };
+    let $in = ['${point.x} < ${point.y}', { point: { x: 1, y: 2 } }];
     let $out = '1 < 2';
-    expect(transformer.template($in.s, $in.o)).to.deep.equal($out);
+    expect(transformer.template($in[0], $in[1])).to.deep.equal($out);
 
-    $in = { s: '${point.x} < ${point.y} < ${point.z}', o: { point: { x: 1, y: 2 } } };
+    $in = ['${point.x} < ${point.y} < ${point.z}', { point: { x: 1, y: 2 } }];
     $out = '1 < 2 < ${point.z}';
-    expect(transformer.template($in.s, $in.o)).to.deep.equal($out);
+    expect(transformer.template($in[0], $in[1])).to.deep.equal($out);
+  });
+
+
+  it('assign', () => {
+    let $in = [{ a: 1 }, { b: 1 }];
+    let $out = { a: 1, b: 1 };
+    expect($in[0]).to.not.deep.equal($out);
+    expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
+
+    $in = [{ a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3 } } }, { b: { d: -2, e: { f: -3 } } }];
+    $out = { a: 1, b: { c: 2, d: -2, e: { f: -3, g: 3 } } };
+    expect($in[0]).to.not.deep.equal($out);
+    expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
+
+    $in = [[1, 2, 3, 0], [3, 2, 1]];
+    $out = [3, 2, 1, 0];
+    expect($in[0]).to.not.deep.equal($out);
+    expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
+
+    $in = [[1, 2, 3], [3, 2, 1, 0]];
+    $out = [3, 2, 1, 0];
+    // expect($in[0]).to.not.deep.equal($out);
+    // expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
+
+    $in = [[1, 2, 3], [undefined, null, false]];
+    $out = [undefined, null, false];
+    expect($in[0]).to.not.deep.equal($out);
+    expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
+
+    $in = [[1, { a: 1 }, 3], [1, 2]];
+    $out = [1, 2, 3];
+    // expect($in[0]).to.not.deep.equal($out);
+    // expect(transformer.assign($in[0], $in[1])).to.deep.equal($out);
   });
 });

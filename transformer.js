@@ -14,8 +14,6 @@ const $ = {
 
   intersect: (...a) => a.reduce((p, c, i) => (i === 0 ? c : p.filter(e => c.includes(e))), []),
 
-  assign: true, // TODO:
-
   flatten: (c, d = '.') => {
     const r = {};
     (function f(o, p) {
@@ -38,6 +36,34 @@ const $ = {
       r = r.replace(regex, o[k]);
     });
     return r;
+  },
+
+  assign: (c, ...cs) => {
+    cs.forEach(cc =>
+      (function a(o, oo) {
+        Object.keys(o).forEach(k => {
+          if (o[k] && typeof o[k] === 'object') {
+            return a(o[k], oo[k]);
+          }
+
+          // TODO: This part needs more love
+          if (k in oo) {
+            o[k] = oo[k];
+          } else {
+            Object.keys(oo).forEach(kk => {
+              if (kk in o) {
+                // oo[kk]
+              } else {
+                o[kk] = oo[kk];
+              }
+            });
+          }
+
+          return o[k];
+        });
+      }(c, cc))
+    );
+    return c;
   },
 };
 
