@@ -1,16 +1,16 @@
 /* */
 
 const $ = {
-  co2ar: (c, id) => Object.keys(c).map(k => Object.assign(c[k], { [id]: k })),
+  co2ar: (c, id) => Object.keys(c).map(k => { c[k][id] = k; return c[k]; }),
 
   ar2ar: (a, id) => a.map(e => ({ [e[id]]: (() => { delete e[id]; return e; })() })),
 
   ar2ob: (a, id) => a.map(e => ({ [e[id]]: (() => { delete e[id]; return e; })() }))
-                   .reduce((p, c) => {
-                     const k = Object.keys(c)[0];
-                     p[k] = c[k];
-                     return p;
-                   }, {}),
+                    .reduce((p, c) => {
+                      const k = Object.keys(c)[0];
+                      p[k] = c[k];
+                      return p;
+                    }, {}),
 
   intersect: (...a) => a.reduce((p, c, i) => (i === 0 ? c : p.filter(e => c.includes(e))), []),
 
