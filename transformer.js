@@ -63,8 +63,10 @@ const $ = {
         });
       }(r, cc));
 
-      if (Array.isArray(c) && Array.isArray(cc) && c.length < cc.length) {
-        r = r.concat(cc.slice(c.length));
+      if (Array.isArray(r) && Array.isArray(cc) && r.length < cc.length) {
+        r = r.concat(cc.slice(r.length));
+      } else if (typeof r === 'object' && !Object.keys(r).length) {
+        r = cc;
       }
     });
     return r;

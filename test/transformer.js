@@ -57,7 +57,6 @@ describe('transformer', () => {
       { id: '2', x: 2, y: 2 },
     ];
     expect(transformer.co2ar(inp, 'id')).to.deep.equal(out);
-    expect(inp['1']).to.deep.equal(out[0]);
   });
 
 
@@ -85,7 +84,6 @@ describe('transformer', () => {
       { 2: { x: 2, y: 2 } },
     ];
     expect(transformer.ar2ar(inp, 'id')).to.deep.equal(out);
-    expect(inp[0]).to.deep.equal(out[0]['1']);
   });
 
 
@@ -112,7 +110,6 @@ describe('transformer', () => {
       2: { x: 2, y: 2 },
     };
     expect(transformer.ar2ob(inp, 'id')).to.deep.equal(out);
-    expect(inp[0]).to.deep.equal(out['1']);
   });
 
 
@@ -152,7 +149,6 @@ describe('transformer', () => {
     inp = [[true, '1', '2'], [false, true, '2'], ['2', true]];
     out = ['2', true];
     expect(transformer.intersect(inp[0], inp[1], inp[2]).sort()).to.deep.equal(out);
-    expect(inp[0]).to.not.deep.equal(out);
   });
 
 
@@ -184,7 +180,6 @@ describe('transformer', () => {
     inp = { a: { b: 1, c: 1, dd: 1 } };
     out = { ab: 1, ac: 1, add: 1 };
     expect(transformer.flatten(inp, '')).to.deep.equal(out);
-    expect(inp).to.not.deep.equal(out);
   });
 
 
@@ -216,7 +211,6 @@ describe('transformer', () => {
     inp = { ab: 1, ac: 1, add: 1 };
     out = { a: { b: 1, c: 1, d: { d: 1 } } };
     expect(transformer.unflatten(inp, '')).to.deep.equal(out);
-    expect(inp).to.not.deep.equal(out);
   });
 
 
@@ -228,7 +222,6 @@ describe('transformer', () => {
     inp = ['${point.x} < ${point.y} < ${point.z}', { point: { x: 1, y: 2 } }];
     out = '1 < 2 < ${point.z}';
     expect(transformer.template(inp[0], inp[1])).to.equal(out);
-    expect(inp[0]).to.not.equal(out);
   });
 
 
@@ -237,9 +230,13 @@ describe('transformer', () => {
     let out = { a: 1, b: 1, c: 1 };
     expect(transformer.assign(inp[0], inp[1], inp[2])).to.deep.equal(out);
 
-    inp = [{ a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3 } } }, { b: { d: -2, e: { f: -3 } } }, { b: { d: -2, e: { h: -3 } } }];
+    inp = [{}, { a: 1, b: { c: 2, d: 2, e: { f: 3, g: 3 } } }, { b: { d: -2, e: { f: -3 } } }, { b: { d: -2, e: { h: -3 } } }];
     out = { a: 1, b: { c: 2, d: -2, e: { f: -3, g: 3, h: -3 } } };
-    expect(transformer.assign(inp[0], inp[1], inp[2])).to.deep.equal(out);
+    expect(transformer.assign(inp[0], inp[1], inp[2], inp[3])).to.deep.equal(out);
+
+    inp = [{ a: 1, b: [1, 2] }, { b: [3, 4] }];
+    out = { a: 1, b: [3, 4] };
+    expect(transformer.assign(inp[0], inp[1], inp[2], inp[3])).to.deep.equal(out);
 
     inp = [[1, 2, 3, 0], ['1'], [3, 2, 1]];
     out = [3, 2, 1, 0];
@@ -249,17 +246,16 @@ describe('transformer', () => {
     out = [3, 2, 1, 0];
     expect(transformer.assign(inp[0], inp[1], inp[2])).to.deep.equal(out);
 
-    inp = [[1, 2, 3], ['1'], [undefined, null, false]];
-    out = [undefined, null, false];
+    inp = [[1, 2, 3], ['1'], [{}, undefined, null, false]];
+    out = [{}, undefined, null, false];
     expect(transformer.assign(inp[0], inp[1], inp[2])).to.deep.equal(out);
 
     inp = [[1, { a: 1 }, 3], ['1'], [1, 2]];
     out = [1, 2, 3];
     expect(transformer.assign(inp[0], inp[1], inp[2])).to.deep.equal(out);
 
-    inp = [[1, { a: 1, b: { c: 2 } }, 3], ['1'], [1, { b: { c: -2 } }]];
-    out = [1, { a: 1, b: { c: -2 } }, 3];
-    expect(transformer.assign(inp[0], inp[1], inp[2])).to.deep.equal(out);
-    expect(inp[0]).to.deep.equal(out);
+    inp = [[], [1, { a: 1, b: { c: 2 } }, 3], ['1'], [{}, { b: { c: [{ d: 3 }] } }]];
+    out = [{}, { a: 1, b: { c: [{ d: 3 }] } }, 3];
+    expect(transformer.assign(inp[0], inp[1], inp[2], inp[3])).to.deep.equal(out);
   });
 });
