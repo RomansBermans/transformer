@@ -7,12 +7,7 @@
   },
   "scripts": {
     "pretest": "eslint --ignore-path .gitignore .",
-    "test": "istanbul cover _mocha -- test -R list --recursive --ui bdd --slow 10 --timeout 500",
-
-    "clean": "npm prune",
-    "outdated": "npm outdated --depth=0",
-
-    "postversion": "git push && git push --tags"
+    "test": "istanbul cover _mocha -- test -R list --recursive --ui bdd --slow 10 --timeout 500"
   },
   "devDependencies": {
     "chai": "^3.5.0",
