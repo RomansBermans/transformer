@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-expressions, no-sparse-arrays, no-template-curly-in-string */
+/* */
 
 const { expect } = require('./config');
 
