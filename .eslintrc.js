@@ -11,7 +11,6 @@ module.exports = {
     'no-return-assign': 'off',
     'no-sparse-arrays': 'off',
     'no-template-curly-in-string': 'off',
-    'no-unused-expressions': 'off',
     'object-curly-newline': 'off',
   }
 }
