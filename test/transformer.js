@@ -1,6 +1,7 @@
 /* */
 
-const { expect } = require('./config');
+
+const { expect } = require('chai');
 
 const transformer = require('../transformer');
 
@@ -55,6 +56,16 @@ describe('transformer', () => {
     out = [
       { id: '1', x: 1, y: 1 },
       { id: '2', x: 2, y: 2 },
+    ];
+    expect(transformer.co2ar(inp, 'id')).to.deep.equal(out);
+
+    inp = {
+      1: { x: 1, y: 1 },
+      9: { x: 2, y: 2 },
+    };
+    out = [
+      { id: '1', x: 1, y: 1 },
+      { id: '9', x: 2, y: 2 },
     ];
     expect(transformer.co2ar(inp, 'id')).to.deep.equal(out);
   });

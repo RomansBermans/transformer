@@ -2,11 +2,8 @@
   "name": "transformer",
   "version": "0.0.0-alpha.0",
   "main": "transformer.js",
-  "engines": {
-    "node": ">=6.9.0"
-  },
   "scripts": {
-    "pretest": "eslint --ext .js .",
+    "pretest": "eslint --ignore-path .gitignore --ext .js .",
     "test": "istanbul cover _mocha -- test -R list --recursive --ui bdd --slow 10 --timeout 500"
   },
   "devDependencies": {
