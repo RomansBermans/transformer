@@ -3,7 +3,7 @@
   "version": "0.0.0-alpha.0",
   "main": "transformer.js",
   "scripts": {
-    "pretest": "eslint --ignore-path .gitignore --ext .js .",
+    "pretest": "eslint --ext .js .",
     "test": "istanbul cover _mocha -- test -R list --recursive --ui bdd --slow 10 --timeout 500"
   },
   "devDependencies": {
