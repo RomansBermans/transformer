@@ -7,5 +7,5 @@ module.exports = {
     'no-param-reassign': ['error', { 'props': false }],
     'no-return-assign': 'off',
     'no-unused-expressions': 'off',
-  }
-}
+  },
+};
