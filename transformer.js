@@ -18,7 +18,6 @@ const $ = {
   flatten: (c, d = '.') => {
     const r = {};
     (function f(o, p) {
-      // eslint-disable-next-line no-unused-expressions
       o && Object.keys(o).forEach(k => (o[k] && /Array|Object/.test(o[k].constructor.name) ? f(o[k], p ? `${p}${d}${k}` : k) : r[p ? `${p}${d}${k}` : k] = o[k]));
     }(c));
     return r;
@@ -26,7 +25,6 @@ const $ = {
 
   unflatten: (o, d = '.') => {
     const r = {};
-    // eslint-disable-next-line no-unused-expressions
     o && Object.keys(o).forEach(k => k.split(d).reduce((p, c, i, a) => (i === a.length - 1 ? p[c] = o[k] : p[c] = p[c] ? p[c] : {}), r));
     return r;
   },
