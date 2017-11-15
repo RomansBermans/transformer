@@ -4,7 +4,7 @@
   "main": "transformer.js",
   "scripts": {
     "pretest": "eslint --ext .js .",
-    "test": "istanbul cover _mocha -- test -R list --recursive --ui bdd --slow 10 --timeout 500"
+    "test": "istanbul cover _mocha -- test -R spec --recursive --ui bdd --slow 10 --timeout 500 --exit"
   },
   "devDependencies": {
     "chai": "^4.1.2",
