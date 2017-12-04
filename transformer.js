@@ -2,30 +2,59 @@
 
 
 const $ = {
-  co2ar: (c, id) => Object.keys(c).map(k => { c[k][id] = k; return c[k]; }),
+  co2ar: (c, id) =>
+    Object.keys(c).map(k => {
+      c[k][id] = k;
+      return c[k];
+    }),
 
-  ar2ar: (a, id) => a.map(e => ({ [e[id]]: (() => { delete e[id]; return e; })() })),
+  ar2ar: (a, id) =>
+    a.map(e => ({
+      [e[id]]: (() => {
+        delete e[id];
+        return e;
+      })(),
+    })),
 
-  ar2ob: (a, id) => a.map(e => ({ [e[id]]: (() => { delete e[id]; return e; })() }))
-    .reduce((p, c) => {
-      const k = Object.keys(c)[0];
-      p[k] = c[k];
-      return p;
-    }, {}),
+  ar2ob: (a, id) =>
+    $.ar2ar(a, id)
+      .reduce((p, c) => {
+        const k = Object.keys(c)[0];
+        p[k] = c[k];
+        return p;
+      }, {}),
 
-  intersect: (...a) => a.reduce((p, c, i) => (i === 0 ? c : p.filter(e => c.includes(e))), []),
+  intersect: (...a) =>
+    a.reduce((p, c, i) =>
+      (i === 0
+        ? c
+        : p.filter(e => c.includes(e))
+      ),
+    []),
 
   flatten: (c, d = '.') => {
     const r = {};
     (function f(o, p) {
-      o && Object.keys(o).forEach(k => (o[k] && /Array|Object/.test(o[k].constructor.name) ? f(o[k], p ? `${p}${d}${k}` : k) : r[p ? `${p}${d}${k}` : k] = o[k]));
+      o && Object.keys(o).forEach(k =>
+        (o[k] && /Array|Object/.test(o[k].constructor.name)
+          ? f(o[k], p ? `${p}${d}${k}` : k)
+          : r[p ? `${p}${d}${k}` : k] = o[k]
+        ));
     }(c));
     return r;
   },
 
   unflatten: (o, d = '.') => {
     const r = {};
-    o && Object.keys(o).forEach(k => k.split(d).reduce((p, c, i, a) => (i === a.length - 1 ? p[c] = o[k] : p[c] = p[c] ? p[c] : {}), r));
+    o && Object.keys(o).forEach(k =>
+      k.split(d).reduce((p, c, i, a) =>
+        (i === a.length - 1
+          ? p[c] = o[k]
+          : p[c] = p[c]
+            ? p[c]
+            : {}
+        ),
+      r));
     return r;
   },
 

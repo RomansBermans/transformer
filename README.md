@@ -46,14 +46,14 @@ const output = transformer.intersect(input1, input2);
 ### flatten { x: { y: { z: 1 } } } → { xyz: 1 }
 ```
 const input = { x: { y: { z: 1 } } };
-const output = transformer.flatten(input);
+const output = transformer.flatten(input, '');
 /* →          { xyz: 1 } */
 ```
 
 ### unflatten { xyz: 1 } → { x: { y: { z: 1 } } }
 ```
 const input = { xyz: 1 };
-const output = transformer.unflatten(input);
+const output = transformer.unflatten(input, '');
 /* →          { x: { y: { z: 1 } } } */
 ```
 
