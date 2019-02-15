@@ -45,17 +45,20 @@ const $ = {
   },
 
   unflatten: (o, d = '.') => {
-    const r = {};
-    o && Object.keys(o).forEach(k =>
-      k.split(d).reduce((p, c, i, a) =>
-        (i === a.length - 1
-          ? p[c] = o[k]
-          : p[c] = p[c]
-            ? p[c]
-            : {}
-        ),
-      r));
-    return r;
+    if (o && /Object/.test(o.constructor.name)) {
+      const r = {};
+      o && Object.keys(o).forEach(k =>
+        k.split(d).reduce((p, c, i, a) =>
+          (i === a.length - 1
+            ? p[c] = o[k]
+            : p[c] = p[c]
+              ? p[c]
+              : {}
+          ),
+        r));
+      return r;
+    }
+    return o;
   },
 
   template: (s, c) => {

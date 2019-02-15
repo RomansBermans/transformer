@@ -160,6 +160,10 @@ describe('transformer', () => {
     inp = [[true, '1', '2'], [false, true, '2'], ['2', true]];
     out = ['2', true];
     expect(transformer.intersect(inp[0], inp[1], inp[2]).sort()).to.deep.equal(out);
+
+    inp = [1, 2, 3];
+    out = [1, 2, 3];
+    expect(transformer.unflatten(inp, '')).to.deep.equal(out);
   });
 
 
