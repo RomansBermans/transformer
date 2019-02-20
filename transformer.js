@@ -33,21 +33,24 @@ const $ = {
     []),
 
   flatten: (c, d = '.') => {
-    const r = {};
-    (function f(o, p) {
-      o && Object.keys(o).forEach(k =>
-        (o[k] && /Array|Object/.test(o[k].constructor.name)
-          ? f(o[k], p ? `${p}${d}${k}` : k)
-          : r[p ? `${p}${d}${k}` : k] = o[k]
-        ));
-    }(c));
-    return r;
+    if (c && /Array|Object/.test(c.constructor.name)) {
+      const r = {};
+      (function f(o, p) {
+        Object.keys(o).forEach(k =>
+          (o[k] && /Array|Object/.test(o[k].constructor.name)
+            ? f(o[k], p ? `${p}${d}${k}` : k)
+            : r[p ? `${p}${d}${k}` : k] = o[k]
+          ));
+      }(c));
+      return r;
+    }
+    return c;
   },
 
   unflatten: (o, d = '.') => {
     if (o && /Object/.test(o.constructor.name)) {
       const r = {};
-      o && Object.keys(o).forEach(k =>
+      Object.keys(o).forEach(k =>
         k.split(d).reduce((p, c, i, a) =>
           (i === a.length - 1
             ? p[c] = o[k]

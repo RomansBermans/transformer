@@ -160,10 +160,6 @@ describe('transformer', () => {
     inp = [[true, '1', '2'], [false, true, '2'], ['2', true]];
     out = ['2', true];
     expect(transformer.intersect(inp[0], inp[1], inp[2]).sort()).to.deep.equal(out);
-
-    inp = [1, 2, 3];
-    out = [1, 2, 3];
-    expect(transformer.unflatten(inp, '')).to.deep.equal(out);
   });
 
 
@@ -195,6 +191,14 @@ describe('transformer', () => {
     inp = { a: { b: 1, c: 1, dd: 1 } };
     out = { ab: 1, ac: 1, add: 1 };
     expect(transformer.flatten(inp, '')).to.deep.equal(out);
+
+    inp = [1, 2, 3];
+    out = { 0: 1, 1: 2, 2: 3 };
+    expect(transformer.flatten(inp, '')).to.deep.equal(out);
+
+    inp = 1;
+    out = 1;
+    expect(transformer.flatten(inp, '')).to.deep.equal(out);
   });
 
 
@@ -225,6 +229,14 @@ describe('transformer', () => {
 
     inp = { ab: 1, ac: 1, add: 1 };
     out = { a: { b: 1, c: 1, d: { d: 1 } } };
+    expect(transformer.unflatten(inp, '')).to.deep.equal(out);
+
+    inp = [1, 2, 3];
+    out = [1, 2, 3];
+    expect(transformer.unflatten(inp, '')).to.deep.equal(out);
+
+    inp = 1;
+    out = 1;
     expect(transformer.unflatten(inp, '')).to.deep.equal(out);
   });
 
