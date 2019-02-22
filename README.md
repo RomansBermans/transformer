@@ -1,6 +1,6 @@
 # transformer [![Build Status](https://travis-ci.org/RomansBermans/transformer.svg?branch=master)](https://travis-ci.org/RomansBermans/transformer)
 
-A few JavaScript ES2016 one-liners for rapid data transformation.
+A few JavaScript ES2018 one-liners for rapid data transformation.
     
 ## Install
 ```
