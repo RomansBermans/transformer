@@ -64,3 +64,4 @@ const input2 = { x: 1, y: 2 };
 const output = transformer.template(input1, input2);
 /* →           1 < 2 */
 ```
+
