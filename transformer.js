@@ -1,27 +1,26 @@
 /* */
 
-
 const $ = {
   co2ar: (c, id) =>
     Object.keys(c).map(k => {
-      c[k][id] = k;
-      return c[k];
+      c[k][id] = k
+      return c[k]
     }),
 
   ar2ar: (a, id) =>
     a.map(e => ({
       [e[id]]: (() => {
-        delete e[id];
-        return e;
-      })(),
+        delete e[id]
+        return e
+      })()
     })),
 
   ar2ob: (a, id) =>
     $.ar2ar(a, id)
       .reduce((p, c) => {
-        const k = Object.keys(c)[0];
-        p[k] = c[k];
-        return p;
+        const k = Object.keys(c)[0]
+        p[k] = c[k]
+        return p
       }, {}),
 
   intersect: (...a) =>
@@ -35,77 +34,76 @@ const $ = {
   flatten: (c, d = '.') => {
     if (c && /Array|Object/.test(c.constructor.name)) {
       const r = {};
-      (function f(o, p) {
+      (function f (o, p) {
         Object.keys(o).forEach(k =>
           (o[k] && /Array|Object/.test(o[k].constructor.name)
             ? f(o[k], p ? `${p}${d}${k}` : k)
-            : r[p ? `${p}${d}${k}` : k] = o[k]
-          ));
-      }(c));
-      return r;
+            : (r[p ? `${p}${d}${k}` : k] = o[k])
+          ))
+      }(c))
+      return r
     }
-    return c;
+    return c
   },
 
   unflatten: (o, d = '.') => {
     if (o && /Object/.test(o.constructor.name)) {
-      const r = {};
+      const r = {}
       Object.keys(o).forEach(k =>
         k.split(d).reduce((p, c, i, a) =>
           (i === a.length - 1
-            ? p[c] = o[k]
-            : p[c] = p[c] || {}
+            ? (p[c] = o[k])
+            : (p[c] = p[c] || {})
           ),
-        r));
-      return r;
+        r))
+      return r
     }
-    return o;
+    return o
   },
 
   template: (s, c) => {
-    let r = s;
-    const o = $.flatten(c);
+    let r = s
+    const o = $.flatten(c)
     Object.keys(o).forEach(k => {
-      const regex = new RegExp(`\\$\\{${k}\\}`, 'g');
-      r = r.replace(regex, o[k]);
-    });
-    return r;
+      const regex = new RegExp(`\\$\\{${k}\\}`, 'g')
+      r = r.replace(regex, o[k])
+    })
+    return r
   },
 
   assign: (c, ...cs) => {
-    let r = c;
+    let r = c
     cs.forEach(cc => {
-      (function a(o, oo, op, opk) {
+      (function a (o, oo, op, opk) {
         Object.keys(o).forEach(k => {
           if (o[k] && typeof o[k] === 'object') {
-            return a(o[k], oo ? oo[k] : oo, o, k);
+            return a(o[k], oo ? oo[k] : oo, o, k)
           }
 
           if (typeof oo === 'object' && k in oo) {
-            o[k] = oo[k];
+            o[k] = oo[k]
           } else if (oo !== undefined && typeof oo !== 'object') {
-            op[opk] = oo;
+            op[opk] = oo
           } else if (oo !== undefined) {
             Object.keys(oo).forEach(kk => {
               if (!(kk in o)) {
-                o[kk] = oo[kk];
+                o[kk] = oo[kk]
               }
-            });
+            })
           }
 
-          return o[k];
-        });
-      }(r, cc));
+          return o[k]
+        })
+      }(r, cc))
 
       if (Array.isArray(r) && Array.isArray(cc) && r.length < cc.length) {
-        r = r.concat(cc.slice(r.length));
+        r = r.concat(cc.slice(r.length))
       } else if (typeof r === 'object' && !Object.keys(r).length) {
-        r = cc;
+        r = cc
       }
-    });
-    return r;
-  },
-};
+    })
+    return r
+  }
+}
 
-
-module.exports = $;
+module.exports = $
