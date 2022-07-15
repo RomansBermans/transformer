@@ -7,15 +7,15 @@
     "test": "istanbul cover _mocha -- test -R spec --recursive --ui bdd --slow 10 --timeout 500 --exit"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
+    "chai": "^4.3.6",
+    "eslint": "^8.19.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-standard": "^5.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^7.0.0"
+    "mocha": "^10.0.0"
   },
   "repository": {
     "type": "git",

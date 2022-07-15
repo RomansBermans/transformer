@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    mocha: true,
+    mocha: true
   },
   rules: {
     'no-sparse-arrays': 'off',
