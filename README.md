@@ -1,4 +1,4 @@
-# transformer [![Build Status](https://travis-ci.org/RomansBermans/transformer.svg?branch=master)](https://travis-ci.org/RomansBermans/transformer)
+# transformer
 
 A few JavaScript one-liners for rapid data transformation.
     
